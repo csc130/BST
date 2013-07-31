@@ -3,17 +3,18 @@ package adt.util;
 public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 	BSTNode<T> root;
 	int length;
+	boolean found = false;
 
 	public BST() {
 		root = null;
-		length=0;
+		length = 0;
 	}
 
 	@Override
 	public void add(T data) {
 		// TODO Auto-generated method stub
 		root = recAdd(data, this.root);
-		length+=1;
+		length += 1;
 	}
 
 	private BSTNode<T> recAdd(T data, BSTNode<T> tree) {
@@ -28,33 +29,62 @@ public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 		return tree;
 	}
 
-	@Override
-	public void remove(T data) {
+	public boolean remove(T data) throws EmptyBSTException {
 		// TODO Auto-generated method stub
+
 		try {
-			recRemove(data, this.root);
-		} catch (EmptyBSTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			root = recRemove(data, this.root);
 		} catch (DataNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		length-=1;
+
+		length -= 1;
+		return found;
 	}
 
-	
-	private void recRemove(T data, BSTNode<T> root2) throws EmptyBSTException, DataNotFoundException {
+	private BSTNode<T> recRemove(T data, BSTNode<T> tree)
+			throws EmptyBSTException, DataNotFoundException {
 		// TODO Auto-generated method stub
-		if(!isEmpty()) {
-			if (contains(data)) {
-				
-			} else {
-				throw new DataNotFoundException("No data");
-			}
+		if (tree == null) {
+			found = false;
+		} else if (data.compareTo(tree.getData()) < 0) {
+			tree.setLeft(recRemove(data, tree.getLeft()));
+		} else if (data.compareTo(tree.getData()) > 0) {
+			tree.setRight(recRemove(data, tree.getRight()));
 		} else {
-			throw new EmptyBSTException("Empty BST!");
+			found = true;
+			tree = removeNode(tree);
+
 		}
+		return tree;
+
+	}
+
+	private BSTNode<T> removeNode(BSTNode<T> tree) throws EmptyBSTException,
+			DataNotFoundException {
+		// case 1: if node is leaf
+		/*
+		 * if ((tree.getLeft() == null) && tree.getRight() == null) { return
+		 * null; } else
+		 */if (tree.getLeft() == null) {
+			return tree.getRight();
+		} else if (tree.getRight() == null) {
+			return tree.getLeft();
+		} else {
+			BSTNode<T> temp = findHighestLeft(tree.getLeft());
+			tree.setData(temp.getData());
+			tree.setLeft(recRemove(temp.getData(), tree.getLeft()));
+		}
+		return tree;
+	}
+
+	private BSTNode<T> findHighestLeft(BSTNode<T> tree) {
+		// TODO Auto-generated method stub
+		while (tree.getRight() != null) {
+			tree = tree.getRight();
+		}
+		return tree;
 	}
 
 	@Override
@@ -63,20 +93,20 @@ public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 	}
 
 	private boolean recContains(T data, BSTNode<T> root) {
-		// when root is null 
+		// when root is null
 		if (root == null) {
 			return false;
 		}
-		
-		if(data.compareTo(root.getData())==0) {
+
+		if (data.compareTo(root.getData()) == 0) {
 			return true;
-		} else if (data.compareTo(root.getData())<0) {
-			return recContains(data,root.getLeft());
-		} else  {
-			return recContains(data,root.getRight());
-		} 
-		//return false;
-		
+		} else if (data.compareTo(root.getData()) < 0) {
+			return recContains(data, root.getLeft());
+		} else {
+			return recContains(data, root.getRight());
+		}
+		// return false;
+
 	}
 
 	@Override
@@ -86,29 +116,40 @@ public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 
 	@Override
 	public boolean isEmpty() {
-		return(root == null);	
+		return (root == null);
 	}
+
+	/*
+	 * @Override public String inOrder() { return inOrder(this.root); }
+	 * 
+	 * public String inOrder(BSTNode<T> branch) { String toReturn = ""; // Left
+	 * if (branch.getLeft() != null) { toReturn += inOrder(branch.getLeft()); }
+	 * // Root toReturn += branch.getData().toString();
+	 * 
+	 * // Right if (branch.getRight() != null) { toReturn +=
+	 * inOrder(branch.getRight()); }
+	 * 
+	 * return toReturn; }
+	 */
 
 	@Override
 	public String inOrder() {
+		// TODO Auto-generated method stub
 		return inOrder(this.root);
 	}
 
-	public String inOrder(BSTNode<T> branch) {
-		String toReturn = "";
+	String bstList = "";
+	public String inOrder(BSTNode<T> tree) {
+
 		// Left
-		if (branch.getLeft() != null) {
-			toReturn += inOrder(branch.getLeft());
+		if (tree != null) {
+			inOrder(tree.getLeft());
+			// Root
+			bstList += tree.getData();
+			// Right
+			inOrder(tree.getRight());
 		}
-		// Root
-		toReturn += branch.getData().toString();
-
-		// Right
-		if (branch.getRight() != null) {
-			toReturn += inOrder(branch.getRight());
-		}
-
-		return toReturn;
+		return bstList;
 	}
 
 	@Override
