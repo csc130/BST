@@ -31,28 +31,51 @@ public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 	@Override
 	public void remove(T data) {
 		// TODO Auto-generated method stub
+		try {
+			recRemove(data, this.root);
+		} catch (EmptyBSTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		length-=1;
 	}
 
 	
+	private void recRemove(T data, BSTNode<T> root2) throws EmptyBSTException, DataNotFoundException {
+		// TODO Auto-generated method stub
+		if(!isEmpty()) {
+			if (contains(data)) {
+				
+			} else {
+				throw new DataNotFoundException("No data");
+			}
+		} else {
+			throw new EmptyBSTException("Empty BST!");
+		}
+	}
+
 	@Override
 	public boolean contains(T data) {
 		return recContains(data, this.root);
 	}
 
 	private boolean recContains(T data, BSTNode<T> root) {
-		// TODO Auto-generated method stub
+		// when root is null 
 		if (root == null) {
 			return false;
 		}
+		
 		if(data.compareTo(root.getData())==0) {
 			return true;
 		} else if (data.compareTo(root.getData())<0) {
 			return recContains(data,root.getLeft());
-		} else if (data.compareTo(root.getData())>0) {
+		} else  {
 			return recContains(data,root.getRight());
 		} 
-		return false;
+		//return false;
 		
 	}
 

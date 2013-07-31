@@ -19,17 +19,18 @@ public class Driver {
 		test.add("f");*/
 		
 		System.out.println(test.inOrder());
-		System.out.println(test.preOrder());
-		System.out.println(test.postOrder());
-		System.out.println(test.contains("a"));
+	/*	System.out.println(test.preOrder());
+		System.out.println(test.postOrder());	*/	
+		/*System.out.println(test.contains("a"));
 		System.out.println(test.contains("b"));		
 		System.out.println(test.contains("c"));
 		System.out.println(test.contains("d"));
-		System.out.println(test.contains("e"));		
+		System.out.println(test.contains("e"));
+		
 		System.out.println(test.contains("f"));
-		System.out.println(test.contains("g"));
-		System.out.println(test.contains("h"));		
-		System.out.println(test.contains("i"));
+		System.out.println(test.contains("g"));*/
+		//System.out.println(test.contains("h"));		
+		//System.out.println(test.contains("i"));
 	}
 
 }
