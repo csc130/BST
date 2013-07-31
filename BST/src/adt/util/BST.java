@@ -31,12 +31,15 @@ public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 
 	public boolean remove(T data) throws EmptyBSTException {
 		// TODO Auto-generated method stub
+		if (!isEmpty()) {
+			try {
+				root = recRemove(data, this.root);
+			} catch (DataNotFoundException e) {
+				// TODO Auto-generated catch block
 
-		try {
-			root = recRemove(data, this.root);
-		} catch (DataNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			}
+		} else {
+			throw new EmptyBSTException("BST is empty!");
 		}
 
 		length -= 1;
@@ -63,11 +66,7 @@ public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 
 	private BSTNode<T> removeNode(BSTNode<T> tree) throws EmptyBSTException,
 			DataNotFoundException {
-		// case 1: if node is leaf
-		/*
-		 * if ((tree.getLeft() == null) && tree.getRight() == null) { return
-		 * null; } else
-		 */if (tree.getLeft() == null) {
+		if (tree.getLeft() == null) {
 			return tree.getRight();
 		} else if (tree.getRight() == null) {
 			return tree.getLeft();
@@ -135,10 +134,12 @@ public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 	@Override
 	public String inOrder() {
 		// TODO Auto-generated method stub
+		bstList = "";
 		return inOrder(this.root);
 	}
 
 	String bstList = "";
+
 	public String inOrder(BSTNode<T> tree) {
 
 		// Left
