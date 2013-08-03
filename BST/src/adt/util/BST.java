@@ -2,8 +2,9 @@ package adt.util;
 
 public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 	BSTNode<T> root;
-	int length;
+	int length, index;
 	boolean found = false;
+	Object[] bstArrayList;
 
 	public BST() {
 		root = null;
@@ -66,13 +67,16 @@ public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 
 	private BSTNode<T> removeNode(BSTNode<T> tree) throws EmptyBSTException,
 			DataNotFoundException {
-		if (tree.getLeft() == null) {
+
+		if (tree.getLeft() == null) {		//node with one child to the right
 			return tree.getRight();
-		} else if (tree.getRight() == null) {
+		} else if (tree.getRight() == null) {//node with one child to the left
 			return tree.getLeft();
-		} else {
+		} else {//node with two children
 			BSTNode<T> temp = findHighestLeft(tree.getLeft());
+			// replace the root node with highest left
 			tree.setData(temp.getData());
+			// remove the highest left node and set the link to it
 			tree.setLeft(recRemove(temp.getData(), tree.getLeft()));
 		}
 		return tree;
@@ -200,6 +204,57 @@ public class BST<T extends Comparable<T>> implements BSTInterface<T> {
 		toReturn += branch.getData().toString();
 
 		return toReturn;
+
+	}
+
+	public void inOrderList() {
+		recInOrderList(this.root);
+	}
+
+	private void recInOrderList(BSTNode<T> tree) {
+		// TODO Auto-generated method stub
+		if (tree != null) {
+			// left
+			recInOrderList(tree.getLeft());
+			// root
+			bstArrayList[index] = tree.getData();
+			index++;
+			// right
+			recInOrderList(tree.getRight());
+		}
+
+	}
+//0 1 2
+	@SuppressWarnings("unchecked")
+	public void recbalance(int low, int high) {
+		int mid;
+		//case 1 item 
+		if(low==high) {
+			add((T)bstArrayList[low]);
+		} else if (low+1 == high) {
+			add((T)bstArrayList[high]);
+			add((T)bstArrayList[low]);
+		} else {
+			mid = (low+high)/2;
+			//add((T)bstArrayList[mid]);
+			//first half
+			recbalance(low, mid);
+			//second half
+			recbalance(mid+1, high);
+
+		}
+	}
+
+	public void balance() {
+		// get the sorted BST
+		index = 0;
+		bstArrayList = new Object[size()];
+		inOrderList();
+		this.root=null;
+		recbalance(0,size()-1);
+		/*
+		for(Object x:bstArrayList)
+		System.out.println(x);*/
 
 	}
 

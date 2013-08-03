@@ -11,7 +11,28 @@ public class Driver {
 			System.out.println(e.getMessage());
 		}
 
-		test.add("U");
+		//Test balance tree
+		test.add("0");
+		test.add("1");
+		test.add("2");
+
+		//Test remove
+		/*		test.add("U");
+		test.add("W");
+		test.add("V");
+		test.add("Z");
+		test.add("H");
+		test.add("E");
+		test.add("J");*/
+		System.out.println("INORDER: " +test.inOrder());
+		System.out.println("PRE: " +test.preOrder());
+		System.out.println("POST: " +test.postOrder());
+		test.balance();
+		System.out.println("INORDER: " +test.inOrder());
+		System.out.println("PRE: " +test.preOrder());
+		System.out.println("POST: " +test.postOrder());
+		
+		/*test.add("U");
 		test.add("W");
 		test.add("V");
 		test.add("X");
@@ -27,7 +48,7 @@ public class Driver {
 		test.add("F");
 		test.add("H");
 		test.add("I");
-		test.add("G");
+		test.add("G");*/
 
 		/*
 		 * test.add("d"); test.add("f"); test.add("b"); test.add("c");
@@ -38,15 +59,14 @@ public class Driver {
 		 * test.add("a"); test.add("f");
 		 */
 
-		System.out.println(test.inOrder());
-		try {
-			System.out.println(test.remove("F"));
+		/*try {
+			System.out.println(test.remove("Z"));
 		} catch (EmptyBSTException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
 
-		System.out.println(test.inOrder());
+		System.out.println(test.inOrder());*/
 
 		/*
 		 * System.out.println(test.preOrder());
